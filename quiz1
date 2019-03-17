@@ -1,0 +1,60 @@
+dataset<-read.csv("hw1_data.csv")
+
+#In the dataset provided for this Quiz, what are the column names of the dataset?
+##column names
+colnames(data)
+
+#Extract the first 2 rows of the data frame and print them to the console. What does the output look like?
+##first 2 rows
+dataset[1:2,]
+##or
+head(dataset,2)
+
+#How many observations (i.e. rows) are in this data frame?
+##report the numebr of rows
+n<-nrow(dataset)
+n
+
+#Extract the last 2 rows of the data frame and print them to the console. What does the output look like?
+##last 2 rows
+dataset[(n-1):n,]
+##or
+tail[dataset,2]
+
+#What is the value of Ozone in the 47th row?
+dataset[47,'Ozone']
+##or
+data$Ozone[47]
+
+#How many missing values are in the Ozone column of this data frame?
+bad<-is.na(dataset$Ozone)
+as.numeric(bad)
+sum(bad)
+
+#What is the mean of the Ozone column in this dataset? Exclude missing values (coded as NA) from this calculation.
+bad<-is.na(dataset$Ozone)
+as.numeric(bad)
+sum(bad)
+##or
+Ozonedata<-dataset[,1]
+length(Ozonedata[is.na(Ozonedata)])
+
+#What is the mean of the Ozone column in this dataset? Exclude missing values (coded as NA) from this calculation.
+cleanOzonedata<-Ozonedata[!is.na(Ozonedata)]
+mean(cleanOzonedata)
+
+#Extract the subset of rows of the data frame where Ozone values are above 31 and Temp values are above 90. 
+#What is the mean of Solar.R in this subset?
+data1<-dataset[dataset$Ozone>31,,drop=FALSE]
+data2<-data1[data1$Temp>90,,drop=FALSE]
+data3<-na.omit(data2)
+mean(data3$Solar)
+
+#What is the mean of "Temp" when "Month" is equal to 6?
+data.june<-dataset[dataset$Month==6,,drop=FALSE]
+data.june0<-na.omit(data4)
+mean(data.june0$Temp)
+
+#What was the maximum ozone value in the month of May (i.e. Month is equal to 5)?
+data.may<-dataset[dataset$Month==5,,drop=FALSE]
+max(na.omit(data.may$Ozone))
