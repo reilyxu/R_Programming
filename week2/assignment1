@@ -1,3 +1,5 @@
+coursera R Programming Week 2 Assigment1 Air Pollution
+
 ###introduction(https://www.coursera.org/learn/r-programming/supplement/amLgW/programming-assignment-1-instructions-air-pollution)
 ###part 1
 ```R
@@ -18,3 +20,54 @@ pollutantmean <- function(directory, pollutant, id = 1:332)
     return(mean(data[,pollutant], na.rm = T))
 }
 ```
+
+###part 2
+```R
+complete <- function(directory, id = 1:332){
+    cdata <- data.frame()
+    for (i in id) {
+        path <- paste0(directory,"/", 
+                       formatC(i, width = 3, format = "d", flag = "0"),".csv")
+        nowdata <- read.csv(path)
+        #无确实值的个数（注意逗号）
+        nobs <- nrow(nowdata[complete.cases(nowdata),])
+        row <- c(i,nobs)
+        #把（id, nobs)加入cdata最后一行
+        cdata <- rbind(cdata,row)
+    }
+    #改名字
+    names(cdata) <- c("id","nobs")
+    return(cdata)
+}
+
+###part 3
+```R
+po_corr <- function(directory, threshold = 0){
+    #这几步和之前一样
+    corr_data <- data.frame()
+    for (i in 1:332) {
+        path <- paste0(directory,"/", 
+                       formatC(i, width = 3, format = "d", flag = "0"),".csv")
+        nowdata <- read.csv(path)
+        completedata <- nowdata[complete.cases(nowdata),]
+        nobs <- nrow(completedata)
+        #如果全观测值高于threshold
+        if (nobs > threshold) {
+            #提取第二列
+            x<- completedata[[2]]
+            #提取第三列
+            y <- completedata[[3]]
+            test <- cor.test(x, y)
+            #提取相关系数
+            coefficient <- as.numeric(test$estimate)
+            pvalue <- as.numeric(round(test$p.value,4))
+            newrow <- c(i,coefficient,pvalue)
+            corr_data <- rbind(corr_data,newrow)
+        }else{
+            next
+        }
+       
+    }
+    names(corr_data) <- c("ID","Coeffient","p")
+    return(corr_data)
+}
