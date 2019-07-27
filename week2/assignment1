@@ -60,8 +60,10 @@ po_corr <- function(directory, threshold = 0){
             test <- cor.test(x, y)
             #提取相关系数
             coefficient <- as.numeric(test$estimate)
+            #提取p值（这一步题目没要求，是我自己加的）
             pvalue <- as.numeric(round(test$p.value,4))
             newrow <- c(i,coefficient,pvalue)
+            #形成一个数据表
             corr_data <- rbind(corr_data,newrow)
         }else{
             next
