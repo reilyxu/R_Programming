@@ -1,0 +1,20 @@
+###introduction(https://www.coursera.org/learn/r-programming/supplement/amLgW/programming-assignment-1-instructions-air-pollution)
+###part 1
+```R
+pollutantmean <- function(directory, pollutant, id = 1:332) 
+{
+    #定义一个空datafame【重要】
+    data <- data.frame()
+    #for后面接括号
+    #formatC用于规定格式,d整数，flag=“0”用什么填充
+    for (i in id) {
+        path <- paste0(directory,"/",
+                      formatC(i, width = 3, format = "d", flag = "0"),
+                      ".csv")
+        ndata <- read.csv(path)
+        data <- rbind(data, ndata)
+    }
+    #data$sulfate or data[,"sulfate"]
+    return(mean(data[,pollutant], na.rm = T))
+}
+```
