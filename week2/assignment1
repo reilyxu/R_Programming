@@ -43,7 +43,26 @@ complete <- function(directory, id = 1:332){
 ###part 3
 ```R
 po_corr <- function(directory, threshold = 0){
-    #这几步和之前一样
+    corr_data <- numeric()
+    for (i in 1:332) {
+        path <- paste0(directory,"/", 
+                       formatC(i, width = 3, format = "d", flag = "0"),".csv")
+        nowdata <- read.csv(path)
+        completedata <- nowdata[complete.cases(nowdata),]
+        nobs <- nrow(completedata)
+        if (nobs > threshold) {
+            x<- completedata[[2]]
+            y <- completedata[[3]]
+            coefficient <- as.numeric(cor(x,y))
+            corr_data <- c(corr_data,coefficient)
+        }
+       
+    }
+    return(corr_data)
+}
+
+##如果还想看p值
+po_corr <- function(directory, threshold = 0){
     corr_data <- data.frame()
     for (i in 1:332) {
         path <- paste0(directory,"/", 
@@ -51,7 +70,6 @@ po_corr <- function(directory, threshold = 0){
         nowdata <- read.csv(path)
         completedata <- nowdata[complete.cases(nowdata),]
         nobs <- nrow(completedata)
-        #如果全观测值高于threshold
         if (nobs > threshold) {
             #提取第二列
             x<- completedata[[2]]
@@ -60,16 +78,15 @@ po_corr <- function(directory, threshold = 0){
             test <- cor.test(x, y)
             #提取相关系数
             coefficient <- as.numeric(test$estimate)
-            #提取p值（这一步题目没要求，是我自己加的）
+            #提取p值
             pvalue <- as.numeric(round(test$p.value,4))
             newrow <- c(i,coefficient,pvalue)
             #形成一个数据表
             corr_data <- rbind(corr_data,newrow)
-        }else{
-            next
         }
        
     }
     names(corr_data) <- c("ID","Coeffient","p")
     return(corr_data)
 }
+#但用的时候threshold要大于等于2，否则会报错"not enough finite observations"
