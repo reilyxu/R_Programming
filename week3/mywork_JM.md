@@ -2,6 +2,7 @@
 ##目标是计算同一年出生的人打分的平均值
 
  ```R
+ my_data <- read.csv(file.choose())
  #按出生年份划分
  s <- split(my_data, my_data$birthyear2019)
  #对不同出生年份的人分别算平均值
