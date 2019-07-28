@@ -29,7 +29,7 @@ complete <- function(directory, id = 1:332){
         path <- paste0(directory,"/", 
                        formatC(i, width = 3, format = "d", flag = "0"),".csv")
         nowdata <- read.csv(path)
-        #无确实值的个数（注意逗号）
+        #无缺失值的个数（注意逗号）
         nobs <- nrow(nowdata[complete.cases(nowdata),])
         row <- c(i,nobs)
         #把（id, nobs)加入cdata最后一行
