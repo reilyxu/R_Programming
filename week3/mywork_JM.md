@@ -21,3 +21,14 @@
  #输出！大功告成
  write.csv(mydata2019, file = "2019.csv", quote = F)
  ```
+
+##下了open.xlsx的包
+
+##目标是按年代来划分 如70-79年都算70后
+
+```R
+library(openxlsx)
+gm2016 <- read.xlsx("文件名", startRow = 3)
+gm2016$出生日期 <- as.Date(gm2016$出生日期)
+gm2016$年代 <- sapply(gm2016$出生日期,function(x) paste0(substr(format(x, format = "%Y"),1,3),"0"))
+```
