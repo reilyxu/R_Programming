@@ -4,10 +4,18 @@
 
  ```R
  my_data <- read.csv(file.choose())
+ ##方法一
  #按出生年份划分
  s <- split(my_data, my_data$birthyear2019)
  #对不同出生年份的人分别算平均值
  mydata_av <- sapply(s, function(x) colMeans(x[, c("X2019eng_av","X2019sat_av","X2019org_av")]))
+ ##方法二
+ mydata_ob <- mydata[, c('birthyear2019", "X2019eng_av","X2019sat_av","X2019org_av")]
+ mydata_av <- data.frame()
+ for (i in 2:4) {
+ mydata_t <- tapply(mydata_ob[,i], my_data$birthyear2019, mean)
+ mydata_av <- cbind(mydata_av, mydata_t)
+ }
  #行列转置
  mydata_av <- t(mydata_av)
  #算人数
