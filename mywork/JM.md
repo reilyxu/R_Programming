@@ -32,3 +32,27 @@ gm2016 <- read.xlsx("文件名", startRow = 3)
 gm2016$出生日期 <- as.Date(gm2016$出生日期)
 gm2016$年代 <- sapply(gm2016$出生日期,function(x) paste0(substr(format(x, format = "%Y"),1,3),"0"))
 ```
+
+###不同职族中年轻人和非年轻人的对比
+
+```R
+##新建年轻人列
+#方式一
+young <- rep(0,length(jm2016$年龄))
+young[which(as.numeric(jm2016$年龄) <= 30)] <- "young"
+young[which(as.numeric(jm2016$年龄) > 30)] <- "notyoung"
+jm2016$young<-young
+#方式二
+young <- sapply(jm2016$年龄, function(x) as.integer(x<=30))
+young[which(young == "1")] <- "young"
+young[which(young == "0")] <- "old"
+
+young_dev2016 <- interaction(jm2016$young, jm2016$职位族)
+
+s2019 <- split(jm2019,young_dev2019)
+jm2019_av <- sapply(s2019, function(x) 
+    colMeans(x[, c("X2018eng_av","X2018sat_av","X2018org_av")]))
+renshu2019 <- sapply(s2019, function(x) length(x[, "X2018eng_av"]))
+dsc2019 <- t(rbind(jm2019_av, renshu2019))
+write.xlsx(dsc2019,"2019.xlsx", row.names = T)
+```
