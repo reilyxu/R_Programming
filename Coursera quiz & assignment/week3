@@ -1,1 +1,25 @@
 ###quiz 1 
+#Q1
+s <- split(iris$Sepal.Length,iris$Species)
+sapply(s,mean,na.rm = T)
+##output
+#setosa versicolor  virginica 
+# 5.006      5.936      6.588 
+
+#Q2
+apply(iris[,1:4],2,mean)
+
+#Q3
+tapply(mtcars$mpg, mtcars$cyl, mean)
+sapply(split(mtcars$mpg, mtcars$cyl),mean)
+with(mtcars, tapply(mpg, cyl, mean))
+
+#Q4
+a <- with(hp, tapply(mpg, cyl, mean))
+a[3] - a[1]
+#output
+#126.5779 
+
+#Q5
+Execution of 'ls' will suspend at the beginning of the 
+function and you will be in the browser.
